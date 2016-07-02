@@ -1,0 +1,180 @@
+\documentclass{jsarticle}
+% \usepackage[here]
+
+\makeatletter
+\newcommand{\figcaption}[1]{\def\@captype{figure}\caption{#1}}
+\newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
+\makeatother
+
+\usepackage{float}
+\usepackage[dvipdfmx]{graphicx}
+
+
+\begin{document}
+
+\title{情報工学実験}
+\author{hogehoge}
+\date{2015年4月26日}
+\maketitle
+
+\section{目的}
+
+アナログ通信の中で代表的なAMとFMの通信システムを構成し、各部の動作を確認し、特性を測定し、その原理を理解する。
+
+\section{理論}
+
+ここは理論だよ！！！書こうね！！！
+
+\section{実験方法}
+
+\begin{figure}[H]
+\begin{center}
+  \begin{tabular}{c}
+
+    % 1枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (a)1枚目
+      \end{center}
+    \end{minipage}
+
+    % 2枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (b)2枚目
+      \end{center}
+    \end{minipage}
+
+  \end{tabular}
+  \caption{画像}
+  \label{fig:img}
+  \end{center}
+\end{figure}
+
+\begin{itemize}
+  \item その１
+  \item その２
+\end{itemize}
+
+
+
+\begin{enumerate}
+  \item てす
+  \item ててす
+  \item てててす
+\end{enumerate}
+
+
+
+\section{結果}
+
+\subsection{AMの実験}
+
+\subsection{2}
+
+
+ここは結果をかくよ！！
+\begin{figure}[H]
+\begin{center}
+  \begin{tabular}{c}
+
+    % 1枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (a)1枚目
+      \end{center}
+    \end{minipage}
+
+    % 2枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (b)2枚目
+      \end{center}
+    \end{minipage}
+
+  \end{tabular}
+  \caption{画像}
+  \label{fig:img}
+  \end{center}
+\end{figure}
+
+
+\begin{figure}[h]
+\begin{tabular}{ccc}
+  \begin{minipage}{.30\textwidth}
+  	\begin{tabular}{lc}
+	論理演算	& AND \\
+	論理式	& $F=A\cdot B$\\
+	真理値表	& 表\ref{table:and}\\
+	図記号	& 図\ref{fig:and}
+	\end{tabular}
+
+  \end{minipage}
+  \begin{minipage}{.30\textwidth}
+
+	\centering
+	\includegraphics[width=3cm]{original.png}
+    \figcaption{ANDの図記号}
+    \label{fig:and}
+  \end{minipage}
+
+  \begin{minipage}{.30\textwidth}
+    \begin{center}
+    \tblcaption{ANDの真理値表}
+    \label{table:and}
+	\begin{tabular}{|c|c||c|}\hline
+		A & B & F \\ \hline\hline
+		0 & 0 & 0 \\ \hline
+		0 & 1 & 0 \\ \hline
+		1 & 0 & 0 \\ \hline
+		1 & 1 & 1 \\ \hline
+	\end{tabular}
+    \end{center}
+  \end{minipage}
+\end{tabular}
+\end{figure}
+
+写真を貼ろうね！！！！
+
+
+
+\section{考察}
+
+考察も早くしよう！！！！！
+
+\begin{figure}[H]
+\begin{center}
+  \begin{tabular}{c}
+
+    % 1枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (a)1枚目
+      \end{center}
+    \end{minipage}
+
+    % 2枚目の画像
+    \begin{minipage}{0.5\hsize}
+      \begin{center}
+        \includegraphics[clip, width=60mm]{original.png}
+        \hspace{1.6cm} (b)2枚目
+      \end{center}
+    \end{minipage}
+
+  \end{tabular}
+  \caption{画像}
+  \label{fig:img}
+  \end{center}
+\end{figure}
+
+\section{ラジオ}
+
+
+レポートやだポヨーーーーー
+
+\end{document}
