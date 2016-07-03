@@ -4,9 +4,10 @@
 *.aux
 *.log
 *.dvi
-
-# 特定のファイルを無視する場合は先頭に/を付ける
-#/npm-debug.log
+*.toc
+*.blg
+*.bbl
 document.pdf
 .DS_Store
 
+# 特定のファイルを無視する場合は先頭に/を付ける
