@@ -5,7 +5,7 @@
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[top=20truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
 \usepackage{url}
-\usepackage{listings}
+\usepackage{listings, jlisting}
 
 \lstset{language=c,
   frame=single,
@@ -247,7 +247,7 @@ xorshiftの利点は、整数のxorとshiftしか扱わず非常に高速な計�
 少しの偏りはあるのだが、分布にこだわるのであればメルセンヌツイスター、
 速度にこだわるのであればxorshiftを用いればいいのではないかと思った。
 
-\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, frame=single]
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, caption=xorshiftでの擬似乱数]
 unsigned long xor128(){
 	unsigned long t;
 	t=(x^(x<<11));
