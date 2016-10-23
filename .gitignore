@@ -9,5 +9,6 @@
 *.bbl
 document.pdf
 .DS_Store
+title.tex
 
 # 特定のファイルを無視する場合は先頭に/を付ける
