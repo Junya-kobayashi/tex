@@ -27,9 +27,6 @@
 \maketitle
 
 
-
-
-
 \section{外部仕様}
 \label{sec:外部仕様}
 
@@ -59,32 +56,53 @@
 
 まず、図\ref{fig:start}のようなスタート画面が表示される。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 748 343]{img/start.png}
-  \figcaption{スタート画面}
-  \label{fig:start}
-\end{figure}
+\begin{table}[H]
+	\begin{center}
+	\begin{tabular}{cc}
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 748 343]{img/start.png}
+    \figcaption{スタート画面}
+    \label{fig:start}
+	\end{minipage} &
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 748 343]{img/select_mode.png}
+    \figcaption{難易度選択画面}
+    \label{fig:select}
+	\end{minipage} \\
+	\end{tabular}
+	\end{center}
+\end{table}
 
-次に難易度を３種類から選択する。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 748 343]{img/select_mode.png}
-  \figcaption{難易度選択画面}
-  \label{fig:select}
-\end{figure}
+次に難易度を図\ref{fig:select}のように、３種類から選択する。
+
 
 モード1が最も容易であり、モード3が最も難しい。
 ボタン0でカーソルを左に、ボタン2でカーソルを右に移動する。
 ボタン1で決定するとゲームがスタートする。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 757 347]{img/play.png}
-  \figcaption{プレイ画面}
-  \label{fig:play}
-\end{figure}
+
+
+\begin{table}[H]
+	\begin{center}
+	\begin{tabular}{cc}
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 757 347]{img/play.png}
+    \figcaption{プレイ画面}
+    \label{fig:play}
+	\end{minipage} &
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 765 338]{img/feaver.png}
+    \figcaption{フィーバータイム}
+    \label{fig:feaver}
+	\end{minipage} \\
+	\end{tabular}
+	\end{center}
+\end{table}
 
 図\ref{fig:play}はゲーム中の画面である。
 制限時間は20秒であり、画面右上にはスコアが、右下には残り時間が表示されている。
@@ -92,49 +110,69 @@
 モグラを叩くとスコアが1ずつ増えていき、ブザーが鳴る。ミスした場合モータが振動するが、スコアは変化しない。
 
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 765 338]{img/feaver.png}
-  \figcaption{フィーバータイム}
-  \label{fig:feaver}
-\end{figure}
-
 残り時間3秒になった時にスコアが15以上であると、フィーバータイムとなり図\ref{fig:feaver}のようにボスモグラが出現する。
 ボスモグラ出現時はハンマーがどこの位置にあってもボタン1を押すことでスコアを増やすことができる。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 766 342]{img/result.png}
-  \figcaption{結果の表示}
-  \label{fig:result}
-\end{figure}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 755 335]{img/update.png}
-  \figcaption{ランキングの更新の表示}
-  \label{fig:update}
-\end{figure}
+\begin{table}[H]
+	\begin{center}
+	\begin{tabular}{cc}
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 766 342]{img/result.png}
+    \figcaption{結果の表示}
+    \label{fig:result}
+	\end{minipage} &
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 755 335]{img/update.png}
+    \figcaption{ランキングの更新の表示}
+    \label{fig:update}
+	\end{minipage} \\
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[height=25mm,bb=0 0 766 342]{img/result.png}
+%   \figcaption{結果の表示}
+%   \label{fig:result}
+% \end{figure}
+%
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[height=25mm,bb=0 0 755 335]{img/update.png}
+%   \figcaption{ランキングの更新の表示}
+%   \label{fig:update}
+% \end{figure}
 
 残り時間が0になるとゲームが終了し、図\ref{fig:result}のようにスコアが表示される。
 スコアが3位までのハイスコアを上回っている場合、図\ref{fig:update}のようにメッセージが表示される。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 762 327]{img/ranking.png}
-  \figcaption{ランキングの表示}
-  \label{fig:ranking}
-\end{figure}
+\begin{table}[H]
+	\begin{center}
+	\begin{tabular}{cc}
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 762 327]{img/ranking.png}
+    \figcaption{ランキングの表示}
+    \label{fig:ranking}
+	\end{minipage} &
+	\begin{minipage}{0.49\hsize}
+    \centering
+    \includegraphics[height=25mm,bb=0 0 762 352]{img/retry.png}
+    \figcaption{リトライの確認}
+    \label{fig:retry}
+	\end{minipage} \\
+	\end{tabular}
+	\end{center}
+\end{table}
+
+
 
 その後、図\ref{fig:ranking}のように3位までのスコアのランキングが表示される。
 
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=25mm,bb=0 0 762 352]{img/retry.png}
-  \figcaption{リトライの確認}
-  \label{fig:retry}
-\end{figure}
 
 最後にリトライするかどうかの選択画面が表示される。
 ボタン0とボタン2を用いてカーソルを動かし、ボタン1で決定する。
@@ -147,14 +185,33 @@ YESを選択すると同じモードでリトライすることができ、再�
 \subsection{概要}
 \label{sub:概要}
 
-内部仕様は以下の図\ref{fig:flow}のようなフローチャートで表される。
+内部仕様は以下のようなフローチャートで表される。
+紙面のサイズの都合により、切り出した形のフローチャートとなっている。
+
+このアクティビティー図はplantUMLを用いて自分が作成した。
+
+自分が担当したのは、図\ref{fig:flow2}と図\ref{fig:flow3}のプレイからリトライまでの部分である。
+また、アニメーション表示のラッパー関数的なものも用意した。
 
 \begin{figure}[H]
   \centering
-  \includegraphics[height=210mm,bb=0 0 4408 13975]{img/mogura.png}
-  \figcaption{内部仕様のフローチャート}
-  \label{fig:flow}
+  \includegraphics[height=80mm,bb=0 0 3154 2741]{img/mogura_init.png}
+  \figcaption{内部仕様のフローチャート(難易度を選ぶまで)}
+  \label{fig:flow1}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=210mm,bb=0 0 3741 8229]{img/mogura_play.png}
+  \figcaption{内部仕様のフローチャート(プレイ画面)}
+  \label{fig:flow2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=80mm,bb=0 0 3741 8229]{img/mogura_result.png}
+  \figcaption{内部仕様のフローチャート(結果表示とリトライ確認)}
+  \label{fig:flow3}
+\end{figure}
 
 \end{document}
