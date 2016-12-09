@@ -1,0 +1,247 @@
+\documentclass[11pt,a4j]{jsarticle}
+
+\usepackage{float,array,booktabs,here}
+\usepackage{amsmath}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[top=20truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
+\usepackage{url}
+\usepackage{listings, jlisting}
+
+\lstset{language=[sharp]C,
+  frame=single,
+  stepnumber=1,
+  numbersep=2pt,
+  tabsize=4,
+  basicstyle=\verysmall\ttfamily,
+  stringstyle=\small\texttt,
+  commentstyle=\slshape,
+  captionpos=b,
+  columns=[l]{fullflexible}
+}
+
+\makeatletter
+\newcommand{\figcaption}[1]{\def\@captype{figure}\caption{#1}}
+\newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
+\makeatother
+
+\newcommand{\Maru}[1]{\ooalign{
+\ifnum#1<10 \hfil\resizebox{.9\width}{.85\height}{#1}\hfil
+\else
+\hfil\resizebox{.6\width}{.8\height}{#1}\hfil
+\fi
+\crcr
+\raise.1ex\hbox{$\bigcirc$}}}
+
+
+\begin{document}
+
+\input{title}
+
+
+\section{Moveの計測原理}
+
+PS Moveの先端のスフィアには指定した色で光らせるLEDがついている。
+このLEDの光をWebカメラで認知し、画像処理を施すことでPS Moveの3次元位置計測が可能となる。
+
+まず位置の計測については画像座標系と世界座標系の変換が必要になる。
+内部パラメータAはカメラの焦点距離fと画像の中心uであらわされ、以下のような3×3の行列となる。
+
+\begin{align*}
+  A =
+  \begin{bmatrix}
+    f_x & 0 & u_x \\
+    0 & f_y & u_y \\
+    0 & 0 & 1
+  \end{bmatrix}
+\end{align*}
+
+さらに外部パラメータR, tがあるが世界座標系の原点をカメラに配置すれば行列を一意に定めることができ、
+世界座標系から画像座標へ変換する行列である透視投影行列Pが求められる。
+
+\begin{align*}
+  P =
+  \begin{bmatrix}
+    f_x & 0 & u_x \\
+    0 & f_y & u_y \\
+    0 & 0 & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    r_{11} & r_{12} & r_{13} & t_{x} \\
+    r_{21} & r_{22} & r_{23} & t_{y} \\
+    r_{31} & r_{32} & r_{33} & t_{z} \\
+    0 & 0 & 0 & 1 \\
+  \end{bmatrix}
+\end{align*}
+
+
+行列Pと斉次座標を用いて世界座標から画像座標への変換が得られるが、今回必要なのはその逆変換となる。
+この時PS Moveのスフィアの半径R=2.25cmを用いることによって逆変換が以下のように求められる。
+
+\begin{align*}
+  S_x = \frac{((s_x - u_x)S_z)}{f_x} \\
+  S_y = \frac{((s_y - u_y)S_z)}{f_y} \\
+  S_z = \frac{f_x \times R}{r}
+\end{align*}
+
+次にPS Moveの認識については、まずWebカメラの値を調節して色が判別しやすいようにする。
+
+次にカメラからの入力画像に平滑化フィルタをかけノイズを取り除く。
+RGBからHSVに変換し明るさ、鮮やかさを無視して比較できるようにし、スフィアと同じ色相の画素領域を抽出する。
+周辺にある白・黒の画素によって白と黒を置き換える太め・細め処理を用いて再びノイズ除去をする。
+
+ここで先ほど導出した逆変換の式によって円の検出をする。
+
+
+\section{どのようなバーチャル環境を作ったか}
+
+\subsection{設定}
+本ゲームは弓を用いたシューティングアクションとした。
+主０ティングのターゲットとしては、最初のコンセプトであった弓道をモデルとして一般的な形のマトとした。
+
+\subsection{クリア・ゲームオーバー条件}
+全てのマトを壊した時手でゲーム終了とする
+今回はタイム制などは設けず、時間無制限の全てのマトを壊した時点でのスコア勝負とした。
+
+\section{Moveの計測結果をどのようなバーチャルオブジェクトに反映させたか}
+企画書の時点では、PSMoveのジャイロセンサを用いて傾きも用いる予定であったが
+値の利用に手間取ってしまい、最終的にはカメラから見える、スフィアの位置情報の利用のみにとどまった。
+
+利用に関しては以下のようなコードを記載した。これを矢にアタッチして制御をおこなった。
+部分的に抜き出した部分であるが、弓にアタッチしたスクリプトからPS Moveのトリガーの値によって
+下記スクリプトのisSet, isShotの状態を変化させることで動作をさせている。
+ここでは大きく外れた値をなくすために、ごくごく簡単なフィルタを用いている。
+そのためにsSzという値にフィルタを通した値を書き込むしようとした。
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, caption=弓の引く強さの設定部分]
+  sSz = (float)PSMoveDetect.Sz;
+  if (sSz > 65f) {
+  	sSz = 65f;
+  } else if (sSz < -65f) {
+  	sSz = -65f;
+  }
+
+  if (isSet) {
+  	if (isSetPrev) {
+  		tempPow = sSz;
+  	}
+  	isSetPrev = false;
+  	bow.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f) * (1.0f + ((sSz - tempPow) * length));
+  	this.transform.position = bow.transform.position - (transform.forward * (sSz - tempPow) * plength);
+  }
+
+  if (isShot) {
+  	power = Mathf.Abs(sSz - tempPow);
+  	power *= powerConst;
+  	Debug.Log("shot" + power);
+
+  	Rigidbody rigidBody;
+  	rigidBody = this.GetComponent<Rigidbody> ();
+  	rigidBody.useGravity = true;
+  	rigidBody.AddForce(
+  		transform.forward * power,
+  		ForceMode.Impulse
+  	);
+  	isShot = false;
+  	isSet = false;
+    isGlab = false;
+  	isSetPrev = true;
+  }
+\end{lstlisting}
+
+また、プレイヤーの向きの回転にもPS moveを用いた、該当箇所のコードとしては以下のようなものである。
+ここでも簡単なフィルタを通している。
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, caption=PSMoveを用いたプレイヤーの移動]
+  if ((float)PSMoveDetect.Sx < -2f && (float)PSMoveDetect.Sx > -30f) {
+    transform.Rotate (new Vector3 (0, -Time.deltaTime * speed * Mathf.Abs ((float)PSMoveDetect.Sx), 0));
+  } else if ((float)PSMoveDetect.Sx > 2f && (float)PSMoveDetect.Sx < 30f) {
+    transform.Rotate (new Vector3 (0, Time.deltaTime * speed * Mathf.Abs ((float)PSMoveDetect.Sx), 0));
+  }
+\end{lstlisting}
+
+
+\section{Moveによって生じる、バーチャル環境内でのイベントとゲーム性についての考察}
+
+今回の弓を引くモーションを、PSMoveを用いて再現するというのは、実際にプレイして見て大変面白いものとなった。
+実際に弓を引く経験はないものの、何と無くイメージする形でプレイできるというのは、PS Moveという
+インタラクティブシステムの利用の仕方としては大正解ではなかろうか。
+
+ただ、改善点としてはまだまだあり、弓を引くときの引き具合の調整(今では引く長さがイメージより少し短い。。。)
+などといったことが考えられる。
+
+
+\section{システムの今後の拡張性}
+システムの拡張性としては、多くあるが以下のような点が特に考えられる。
+
+\begin{itemize}
+  \item ゲーム性の追加
+  \item ジャイロの利用
+  \item UniRxを用いたフィルタの作成
+  \item Photonでの通信対戦
+\end{itemize}
+
+\subsection{ゲーム性の追加}
+今回のゲームでは全てのマトを破壊することがクリア条件であったが、もう少し他の要素が欲しかった。
+タイムの実装、ライフ、動く的などの追加によって一気にゲーム性は高まったかと思う。
+
+\subsection{ジャイロの利用}
+企画書の段階では組み込みたかったことなので、組み込めなかったのは大変残念である。
+利用の仕方としては企画書にもあるように、矢を弓にかけた後にジャイロを用いて発車方向の微調整を行うというのが行いたかった。
+後述するフィルタの実装にも手を加えることで、弓を引いているとき独特の、手が震える感じなども
+いい感じで表現できたのではないかなと思う。
+
+
+\subsection{UniRxを用いたフィルタの作成}
+フィルタとRxシリーズの考え方というのは、とても相性がいいのではないかなと思っていたので、フィルタを作成してみたかった。
+具体的には、大きく外れた値をなかったことにすることだけでなく、前の値からの振れ幅を小さくするということが考えられた。
+センサーを使って何かを行う機会は今の所あまりなかったので、今後取り組んで行きたい。
+
+\subsection{Photonでの通信対戦}
+これは、自宅で基本となる部分を準備していただけに、発表の際に完成まで持ち込めなかったのが大変残念であった。
+最初想定していた弓道のゲームであれば、対戦にするというのは大変面白いことであったと思う。
+
+企画書には記載していなく、考えていたアイデアとしてはPS Moveのジャイロを用いたものである。
+具体的には
+\begin{itemize}
+  \item 相手がマトを得ている間にもゲームに参加できるようにする
+  \item 弓道というのは厳粛にことが運ぶもので、待っている間にも緊張があるはず
+  \item そのあいだは、正座で待っているのだが定期的にPS moveが震えて足が痺れて来たことを伝えてくる
+  \item そのときの震え方、もしくは画面に出て来たコマンドによって、PS Moveを左右どちらに傾けるかが決まる
+  \item この傾ける操作によって痺れかけた足から力を抜いて、痺れないようにするというふうにして時間を過ごす。
+  \item この間に失敗すると、次の自分が打つときには足が痺れているという状態にしてデバフ効果をつける
+\end{itemize}
+というものである。
+
+やり切れる自信はなかったので企画書にも記載しなかったが、ジャイロがうまく使えたら面白くなったのでないかなと思う。
+
+\section{まとめと感想}
+
+綺麗な値を返すとは限らないセンサーを用いることの大変砂糖いうものを学んだ。
+斎示行列を用いた返還に関して理解することができ大変良かった。
+
+
+\section{利用したAssetなど}
+使用したAssetやコードなどは以下のものである。
+
+\begin{itemize}
+  \item 弓と矢
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/17728}
+  \item ステージ
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/45579}
+  \item ステージへの追加した小物
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/45038}
+  \item UniRx
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/17276}
+  \item singletonManager
+  \url{http://tsubakit1.hateblo.jp/entry/20140709/1404915381}
+  \item パーティクル1
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/10172}
+  \item パーティクル2
+  \url{https://www.assetstore.unity3d.com/jp/#!/content/11158}
+  \item SeManager
+  \url{https://github.com/naichilab/Unity-SeManager}
+\end{itemize}
+
+
+
+\end{document}
